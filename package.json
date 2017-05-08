@@ -1,0 +1,34 @@
+{
+  "name": "pc-team",
+  "version": "0.0.0",
+  "description": "A team spirit escape game. In the universe of Pacificator Consortium.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p .",
+    "start": "hs -p 80 ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/underfloor/pc-team.git"
+  },
+  "keywords": [
+    "escape",
+    "cooperative",
+    "third person"
+  ],
+  "author": "Underfloor, Solaire, (#Pacificator Consortium)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/underfloor/pc-team/issues"
+  },
+  "homepage": "https://gitlab.com/underfloor/pc-team#README",
+  "devDependencies": {
+    "@types/pixi.js": "^4.4.4",
+    "http-server": "^0.10.0",
+    "typescript": "^2.3.2"
+  },
+  "dependencies": {
+    "pixi.js": "^4.5.1"
+  }
+}
