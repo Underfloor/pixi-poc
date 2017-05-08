@@ -29,6 +29,7 @@
     "typescript": "^2.3.2"
   },
   "dependencies": {
-    "pixi.js": "^4.5.1"
+    "pixi.js": "^4.5.1",
+    "requirejs": "^2.3.3"
   }
 }
