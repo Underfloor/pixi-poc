@@ -1,7 +1,17 @@
 import * as PIXI from "pixi.js";
 
-import {Resize} from "./ResizeType";
 import Viewport from "./Viewport";
+
+import {Resize} from "./ResizeType";
+import {Dock} from "./DoctState";
+
+declare module "pixi.js" {
+  export interface Container {
+    resize: Resize;
+    viewport: Viewport;
+    dock: Dock;
+  }
+}
 
 const baseUpdateTransform = PIXI.Container.prototype.updateTransform;
 
@@ -54,7 +64,7 @@ export const updateTransform = function(): void {
       height *= transform.scale.y;
     }
 
-    if (this.resize) {
+    if (this.resize !== undefined) {
       let ratio: number;
       if (this.resize === Resize.COVER) {
         ratio = Math.max(parentBounds.width / width * transform.scale.x, parentBounds.height / height * transform.scale.y);
@@ -64,6 +74,20 @@ export const updateTransform = function(): void {
 
       if (!isNaN(ratio)) {
         oldTransform.scale.set(ratio, ratio);
+      }
+    }
+
+    if (this.dock !== undefined) {
+      if (this.dock & Dock.CENTER_HORIZONTAL) {
+        this.transform.position.x = ((parentBounds.width - width / (this.pivot.x || 1)) / 2 + this.x * transform.scale.x) / parentTransform.scale.x;
+      } else if (this.dock & Dock.RIGHT) {
+        this.transform.position.x = (parentBounds.width - width / (this.pivot.x || 1) - this.x * transform.scale.x) / parentTransform.scale.x;
+      }
+
+      if (this.dock & Dock.CENTER_VERTICAL) {
+        this.transform.position.y = ((parentBounds.height - height / (this.pivot.y || 1)) / 2 + this.y * transform.scale.y) / parentTransform.scale.y;
+      } else if (this.dock & Dock.BOTTOM) {
+        this.transform.position.y = (parentBounds.height - height / (this.pivot.y || 1) - this.y * transform.scale.y) / parentTransform.scale.y;
       }
     }
 

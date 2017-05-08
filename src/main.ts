@@ -4,13 +4,7 @@ import Viewport from "./Viewport";
 
 import {Resize} from "./ResizeType";
 import {updateTransform} from "./Container";
-
-declare module "pixi.js" {
-  export interface Container {
-    resize: Resize;
-    viewport: Viewport;
-  }
-}
+import {Dock} from "./DoctState";
 
 export class Application extends PIXI.Application {
   constructor() {
@@ -36,6 +30,7 @@ export class Application extends PIXI.Application {
     loader.load(() => {
       let coverContainer = new PIXI.Container();
       coverContainer.name = "coverContainer";
+      coverContainer.dock = Dock.CENTER_ALL;
       coverContainer.resize = Resize.COVER;
       this.stage.addChild(coverContainer);
 
@@ -45,6 +40,7 @@ export class Application extends PIXI.Application {
 
       let containContainer = new PIXI.Container();
       containContainer.name = "containContainer";
+      containContainer.dock = Dock.CENTER_ALL;
       containContainer.resize = Resize.CONTAIN;
       containContainer.viewport = new Viewport(1024, 1024);
       this.stage.addChild(containContainer);
