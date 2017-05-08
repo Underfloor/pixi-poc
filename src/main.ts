@@ -1,28 +1,39 @@
 import * as PIXI from "pixi.js";
 
-if (!PIXI.utils.isWebGLSupported()) {
-  alert("Your browser don't support WebGL, it may be slow !");
+export class Application extends PIXI.Application {
+  constructor() {
+    const noWebGL = !PIXI.utils.isWebGLSupported();
+
+    super(0, 0, {
+      antialias: true,
+      autoResize: true,
+      view: <HTMLCanvasElement> document.getElementById("application")
+    }, noWebGL); 
+
+    if (noWebGL) {
+      alert("Your browser don't support WebGL, it may be slow !");
+    }
+
+    let loader = new PIXI.loaders.Loader("./sprites");
+    loader.add("wood.jpg");
+    loader.load(() => {
+      let wood = PIXI.Sprite.fromFrame("wood.jpg");
+      wood.name = "wood";
+      this.stage.addChild(wood);
+
+      this.start();
+      this.resize();
+    });
+  }
+
+  private resize(): void {
+    this.renderer.resize(window.innerWidth, window.innerHeight);
+
+    this.stage.width = this.renderer.width;
+    this.stage.height = this.renderer.height;
+
+    this.stage.scale.set(1, 1);
+  }
 }
 
-const renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
-renderer.autoResize = true;
-
-window.onresize = () => {
-  renderer.resize(window.innerWidth, window.innerHeight);
-};
-
-document.body.appendChild(renderer.view);
-
-var stage = new PIXI.Container();
-
-renderer.render(stage);
-
-let start = () => {
-  let sprite = new PIXI.Sprite(
-    PIXI.loader.resources["sprites/wood.jpg"].texture
-  );
-  stage.addChild(sprite);
-  renderer.render(stage);
-};
-
-PIXI.loader.add("sprites/wood.jpg").load(start);
+new Application();
