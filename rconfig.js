@@ -1,6 +1,6 @@
 require.config({
   map: {
-    "dist/main": {
+    "*": {
       "pixi.js": "pixi"
     }
   },
