@@ -16,7 +16,7 @@ declare module "pixi.js" {
 const baseUpdateTransform = PIXI.Container.prototype.updateTransform;
 
 export const updateTransform = function(): void {
-  if (this.parent.calculateBounds !== undefined) {
+  if (this.parent.calculateBounds !== undefined && this.transform.position !== undefined) {
     const x = this.transform.position.x;
     const y = this.transform.position.y;
 
