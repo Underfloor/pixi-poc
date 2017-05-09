@@ -25,6 +25,7 @@ export class Application extends PIXI.Application {
     this.stage.name = "stage";
 
     let loader = new PIXI.loaders.Loader("./sprites");
+    loader.add("blue.jpg");
     loader.add("cover.jpg");
     loader.add("wood.jpg");
     loader.add("touhou4dead2.jpg");
@@ -35,9 +36,9 @@ export class Application extends PIXI.Application {
       coverContainer.resize = Resize.COVER;
       this.stage.addChild(coverContainer);
 
-      let cover = PIXI.Sprite.fromFrame("cover.jpg");
-      cover.name = "cover";
-      coverContainer.addChild(cover);
+      let blue = PIXI.Sprite.fromFrame("blue.jpg");
+      blue.name = "blue";
+      coverContainer.addChild(blue);
 
       let containContainer = new PIXI.Container();
       containContainer.name = "containContainer";
@@ -45,6 +46,12 @@ export class Application extends PIXI.Application {
       containContainer.resize = Resize.CONTAIN;
       containContainer.viewport = new Viewport(1024, 1024);
       this.stage.addChild(containContainer);
+
+      let coverAtMask = PIXI.Sprite.fromFrame("cover.jpg");
+      coverAtMask.name = "coverAtMask";
+      containContainer.addChild(coverAtMask);
+
+      containContainer.mask = coverAtMask;
 
       let touhou = PIXI.Sprite.fromFrame("touhou4dead2.jpg");
       touhou.name = "touhou";
