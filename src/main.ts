@@ -52,6 +52,7 @@ export class Application extends PIXI.Application {
 
       let wood = PIXI.Sprite.fromFrame("wood.jpg");
       wood.name = "wood";
+      wood.dock = Dock.CENTER_HORIZONTAL | Dock.BOTTOM;
       containContainer.addChild(wood);
 
       this.start();

@@ -17,34 +17,30 @@ const baseUpdateTransform = PIXI.Container.prototype.updateTransform;
 
 export const updateTransform = function(): void {
   if (this.parent.calculateBounds !== undefined) {
-    let oldTransform = <PIXI.Transform>this.transform;
+    const x = this.transform.position.x;
+    const y = this.transform.position.y;
 
-    const x = oldTransform.position.x;
-    const y = oldTransform.position.y;
-
-    const sx = oldTransform.scale.x;
-    const sy = oldTransform.scale.y;
-
-    const parent = this.parent;
+    const sx = this.transform.scale.x;
+    const sy = this.transform.scale.y;
 
     const transform = new PIXI.Transform();
     transform.setFromMatrix(this.worldTransform);
-    transform.updateTransform(parent.transform);
+    transform.updateTransform(this.parent.transform);
 
     const parentTransform = new PIXI.Transform();
-    parentTransform.setFromMatrix(parent.worldTransform);
+    parentTransform.setFromMatrix(this.parent.worldTransform);
 
-    let parentBounds = parent.getBounds(true);
+    let parentBounds = this.parent.getBounds(true);
 
-    if (parent.viewport !== undefined) {
-      parentBounds.width = parent.viewport.width;
-      parentBounds.height = parent.viewport.height;
+    if (this.parent.viewport !== undefined) {
+      parentBounds.width = this.parent.viewport.width * parentTransform.scale.x;
+      parentBounds.height = this.parent.viewport.height * parentTransform.scale.y;
     } else {
-      if (parent._width !== undefined) {
-        parentBounds.width = parent._width;
+      if (this.parent._width !== undefined) {
+        parentBounds.width = this.parent._width;
       }
-      if (parent._height !== undefined) {
-        parentBounds.height = parent._height;
+      if (this.parent._height !== undefined) {
+        parentBounds.height = this.parent._height;
       }
     }
 
@@ -73,19 +69,19 @@ export const updateTransform = function(): void {
       }
 
       if (!isNaN(ratio)) {
-        oldTransform.scale.set(ratio, ratio);
+        this.transform.scale.set(ratio, ratio);
       }
     }
 
     if (this.dock !== undefined) {
       if (this.dock & Dock.CENTER_HORIZONTAL) {
-        this.transform.position.x = ((parentBounds.width - width / (this.pivot.x || 1)) / 2 + this.x * transform.scale.x) / parentTransform.scale.x;
+        this.transform.position.x = ((parentBounds.width - (width / (this.pivot.x || 1))) / 2 + this.x * transform.scale.x) / parentTransform.scale.x;
       } else if (this.dock & Dock.RIGHT) {
         this.transform.position.x = (parentBounds.width - width / (this.pivot.x || 1) - this.x * transform.scale.x) / parentTransform.scale.x;
       }
 
       if (this.dock & Dock.CENTER_VERTICAL) {
-        this.transform.position.y = ((parentBounds.height - height / (this.pivot.y || 1)) / 2 + this.y * transform.scale.y) / parentTransform.scale.y;
+        this.transform.position.y = ((parentBounds.height - (height / (this.pivot.y || 1))) / 2 + this.y * transform.scale.y) / parentTransform.scale.y;
       } else if (this.dock & Dock.BOTTOM) {
         this.transform.position.y = (parentBounds.height - height / (this.pivot.y || 1) - this.y * transform.scale.y) / parentTransform.scale.y;
       }
@@ -93,10 +89,10 @@ export const updateTransform = function(): void {
 
     baseUpdateTransform.call(this);
 
-    oldTransform.position.x = x;
-    oldTransform.position.y = y;
+    this.transform.position.x = x;
+    this.transform.position.y = y;
 
-    oldTransform.scale.x = sx;
-    oldTransform.scale.y = sy;
+    this.transform.scale.x = sx;
+    this.transform.scale.y = sy;
   }
 }
