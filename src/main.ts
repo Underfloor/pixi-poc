@@ -1,6 +1,7 @@
 ///<reference path="../node_modules/pixi-spine/bin/pixi-spine.d.ts" />
 
 import * as PIXI from "pixi.js";
+import {TweenMax, Power0} from "gsap";
 
 import Viewport from "./Viewport";
 
@@ -62,8 +63,15 @@ export class Application extends PIXI.Application {
 
         let wood = PIXI.Sprite.fromFrame("wood.jpg");
         wood.name = "wood";
-        wood.dock = Dock.CENTER_HORIZONTAL | Dock.BOTTOM;
+        wood.dock = Dock.BOTTOM;
+        wood.x = containContainer.width;
         containContainer.addChild(wood);
+
+        TweenMax.to(wood, 2, <any>{
+          ease: Power0.easeNone,
+          x: -wood.width,
+          repeat: -1
+        });
 
         let spineBoy = new PIXI.spine.Spine(res.spineboy.spineData);
         spineBoy.name = "spineBoy";
