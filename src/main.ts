@@ -61,17 +61,32 @@ export class Application extends PIXI.Application {
         touhou.name = "touhou";
         containContainer.addChild(touhou);
 
+        let fitContainContainer = new PIXI.Container();
+        fitContainContainer.name = "fitContainContainer";
+        fitContainContainer.dock = Dock.CENTER_ALL;
+        fitContainContainer.resize = Resize.FITCONTAIN;
+        fitContainContainer.viewport = new Viewport(768, 768);
+        this.stage.addChild(fitContainContainer);
+
         let wood = PIXI.Sprite.fromFrame("wood.jpg");
         wood.name = "wood";
         wood.dock = Dock.BOTTOM;
-        wood.x = containContainer.width;
-        containContainer.addChild(wood);
+        wood.x = fitContainContainer.width;
+        fitContainContainer.addChild(wood);
 
-        TweenMax.to(wood, 2, <any>{
-          ease: Power0.easeNone,
-          x: -wood.width,
-          repeat: -1
-        });
+        let woodWalk = () => {
+          TweenMax.fromTo(wood, 2, <any>{
+            x: () => {
+              return fitContainContainer.width
+            }
+          }, <any>{
+            ease: Power0.easeNone,
+            x: -wood.width,
+            onComplete: () => woodWalk()
+          });
+        };
+
+        woodWalk();
 
         let spineBoy = new PIXI.spine.Spine(res.spineboy.spineData);
         spineBoy.name = "spineBoy";
@@ -79,7 +94,7 @@ export class Application extends PIXI.Application {
         spineBoy.y = wood.height;
         spineBoy.viewport = new Viewport(1, 1);
         spineBoy.state.setAnimation(0, "walk", true);
-        containContainer.addChild(spineBoy);
+        fitContainContainer.addChild(spineBoy);
 
         this.start();
         this.resize();

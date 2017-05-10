@@ -64,11 +64,15 @@ export const updateTransform = function(): void {
       let ratio: number;
       if (this.resize === Resize.COVER) {
         ratio = Math.max(parentBounds.width / width * transform.scale.x, parentBounds.height / height * transform.scale.y);
-      } else if (this.resize === Resize.CONTAIN) {
+      } else if (this.resize === Resize.CONTAIN || this.resize === Resize.FITCONTAIN) {
         ratio = Math.min(parentBounds.width / width * transform.scale.x, parentBounds.height / height * transform.scale.y);
       }
 
       if (!isNaN(ratio)) {
+
+        if (this.resize === Resize.FITCONTAIN) {
+        }
+
         this.transform.scale.set(ratio, ratio);
       }
     }
