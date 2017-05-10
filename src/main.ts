@@ -63,7 +63,6 @@ export class Application extends PIXI.Application {
 
         let fitContainContainer = new PIXI.Container();
         fitContainContainer.name = "fitContainContainer";
-        fitContainContainer.dock = Dock.CENTER_ALL;
         fitContainContainer.resize = Resize.FITCONTAIN;
         fitContainContainer.viewport = new Viewport(768, 768);
         this.stage.addChild(fitContainContainer);
@@ -95,6 +94,11 @@ export class Application extends PIXI.Application {
         spineBoy.viewport = new Viewport(1, 1);
         spineBoy.state.setAnimation(0, "walk", true);
         fitContainContainer.addChild(spineBoy);
+
+        let wood2 = PIXI.Sprite.fromFrame("wood.jpg");
+        wood2.name = "wood2";
+        wood2.dock = Dock.CENTER_VERTICAL | Dock.RIGHT;
+        fitContainContainer.addChild(wood2);
 
         this.start();
         this.resize();

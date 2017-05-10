@@ -32,7 +32,19 @@ export const updateTransform = function(): void {
 
     let parentBounds = this.parent.getBounds(true);
 
-    if (this.parent.viewport !== undefined) {
+    if (this.parent.resize === Resize.FITCONTAIN && this.parent.parent !== undefined) {
+      if (this.parent.parent.viewport !== undefined) {
+        parentBounds.width = this.parent.parent.viewport.width;
+        parentBounds.height = this.parent.parent.viewport.height;
+      } else {
+        if (this.parent.parent._width !== undefined) {
+          parentBounds.width = this.parent.parent._width;
+        }
+        if (this.parent.parent._height !== undefined) {
+          parentBounds.height = this.parent.parent._height;
+        }
+      }
+    } else if (this.parent.viewport !== undefined) {
       parentBounds.width = this.parent.viewport.width * parentTransform.scale.x;
       parentBounds.height = this.parent.viewport.height * parentTransform.scale.y;
     } else {
@@ -69,10 +81,6 @@ export const updateTransform = function(): void {
       }
 
       if (!isNaN(ratio)) {
-
-        if (this.resize === Resize.FITCONTAIN) {
-        }
-
         this.transform.scale.set(ratio, ratio);
       }
     }
