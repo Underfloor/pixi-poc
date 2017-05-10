@@ -22,9 +22,7 @@ export class Application extends PIXI.Application {
       alert("Your browser don't support WebGL, it may be slow !");
     }
 
-    /*
     PIXI.Container.prototype.updateTransform = updateTransform;
-    */
 
     this.stage.name = "stage";
 
@@ -35,7 +33,6 @@ export class Application extends PIXI.Application {
       .add("touhou4dead2.jpg")
       .add("spineboy", "spineboy.json")
       .load((loader: PIXI.loaders.Loader, res: any) => {
-        /*
         let coverContainer = new PIXI.Container();
         coverContainer.name = "coverContainer";
         coverContainer.dock = Dock.CENTER_ALL;
@@ -67,21 +64,14 @@ export class Application extends PIXI.Application {
         wood.name = "wood";
         wood.dock = Dock.CENTER_HORIZONTAL | Dock.BOTTOM;
         containContainer.addChild(wood);
-        */
 
         let spineBoy = new PIXI.spine.Spine(res.spineboy.spineData);
         spineBoy.name = "spineBoy";
-        //spineBoy.dock = Dock.CENTER_HORIZONTAL | Dock.BOTTOM;
-        /*
+        spineBoy.dock = Dock.CENTER_HORIZONTAL | Dock.BOTTOM;
         spineBoy.y = wood.height;
-        */
-        spineBoy.y = 500;
-        spineBoy.x = 250;
+        spineBoy.viewport = new Viewport(1, 1);
         spineBoy.state.setAnimation(0, "walk", true);
-        this.stage.addChild(spineBoy);
-        /*
         containContainer.addChild(spineBoy);
-        */
 
         this.start();
         this.resize();

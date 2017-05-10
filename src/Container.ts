@@ -94,5 +94,7 @@ export const updateTransform = function(): void {
 
     this.transform.scale.x = sx;
     this.transform.scale.y = sy;
+  } else if (this.parent.calculateBounds !== undefined) {
+    baseUpdateTransform.call(this);
   }
 }
