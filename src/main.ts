@@ -1,12 +1,12 @@
 ///<reference path="../node_modules/pixi-spine/bin/pixi-spine.d.ts" />
 
 import * as PIXI from "pixi.js";
-import {TweenMax, Power0} from "gsap";
+import {TweenMax, Circ} from "gsap";
 
 import Viewport from "./Viewport";
 
 import {Resize} from "./ResizeType";
-import {updateTransform} from "./Container";
+import {updateTransform, refWidth, refHeight} from "./Container";
 import {Dock} from "./DoctState";
 
 export class Application extends PIXI.Application {
@@ -24,6 +24,12 @@ export class Application extends PIXI.Application {
     }
 
     PIXI.Container.prototype.updateTransform = updateTransform;
+    Object.defineProperty(PIXI.Container.prototype, "refWidth", {
+      get: refWidth
+    });
+    Object.defineProperty(PIXI.Container.prototype, "refHeight", {
+      get: refHeight
+    });
 
     this.stage.name = "stage";
 
@@ -76,11 +82,15 @@ export class Application extends PIXI.Application {
         let woodWalk = () => {
           TweenMax.fromTo(wood, 2, <any>{
             x: () => {
-              return fitContainContainer.width
-            }
+              return fitContainContainer.refWidth
+            },
+            y: 0
           }, <any>{
-            ease: Power0.easeNone,
+            ease: Circ.easeInOut,
             x: -wood.width,
+            y: () => {
+              return fitContainContainer.refHeight
+            },
             onComplete: () => woodWalk()
           });
         };

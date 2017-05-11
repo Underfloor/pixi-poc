@@ -10,10 +10,44 @@ declare module "pixi.js" {
     resize: Resize;
     viewport: Viewport;
     dock: Dock;
+    refWidth: number;
+    refHeight: number;
   }
 }
 
 const baseUpdateTransform = PIXI.Container.prototype.updateTransform;
+
+export const refHeight = function(): number {
+  if (this.resize === Resize.FITCONTAIN && this.parent !== undefined) {
+    if (this.parent.viewport !== undefined) {
+      return this.parent.viewport.height / this.transform.localTransform.d;
+    } else if (this.parent._height !== undefined) {
+      return this.parent._height / this.transform.localTransform.d;
+    }
+  } else if (this.viewport !== undefined) {
+    return this.viewport.height;
+  } else if (this._height !== undefined) {
+    return this._height;
+  }
+
+  return this.height;
+}
+
+export const refWidth = function(): number {
+  if (this.resize === Resize.FITCONTAIN && this.parent !== undefined) {
+    if (this.parent.viewport !== undefined) {
+      return this.parent.viewport.width / this.transform.localTransform.a;
+    } else if (this.parent._width !== undefined) {
+      return this.parent._width / this.transform.localTransform.a;
+    }
+  } else if (this.viewport !== undefined) {
+    return this.viewport.width;
+  } else if (this._width !== undefined) {
+    return this._width;
+  }
+
+  return this.width;
+}
 
 export const updateTransform = function(): void {
   if (this.parent.calculateBounds !== undefined && this.transform.position !== undefined) {
