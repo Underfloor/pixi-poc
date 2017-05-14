@@ -72,7 +72,7 @@ export class Application extends PIXI.Application {
           coverAtMask.name = "coverAtMask";
           containContainer.addChild(coverAtMask);
 
-          containContainer.mask = coverAtMask;
+          //containContainer.mask = coverAtMask;
 
           let touhou = PIXI.Sprite.fromFrame("touhou4dead2.jpg");
           touhou.name = "touhou";
@@ -134,6 +134,17 @@ export class Application extends PIXI.Application {
               containContainer.rotation += 0.001;
             });
           });
+
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+              if (Math.random() < 0.7) {
+                let sprite = PIXI.Sprite.fromFrame("wood.jpg");
+                sprite.x = -512 + (i * 256);
+                sprite.y = -512 + (j * 256);
+                containContainer.addChild(sprite);
+              }
+            }
+          }
         });
       });
   }
