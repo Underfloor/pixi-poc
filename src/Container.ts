@@ -120,7 +120,7 @@ export const updateTransform = function(): void {
       }
     }
 
-    if (!!this.dock) {
+    if (!!this.dock && this.resize !== Resize.FITCONTAIN) {
       if (this.dock & Dock.CENTER_HORIZONTAL) {
         this.transform.position.x = ((parentBounds.width - (width / (this.pivot.x || 1))) / 2 + this.x * transform.scale.x) / parentTransform.scale.x;
       } else if (this.dock & Dock.RIGHT) {
